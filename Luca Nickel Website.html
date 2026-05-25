@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luca Nickel</title>
+
+    <meta name="description" content="Luca Nickel — Mechanical Engineering student at Kettering University. Incoming GM co-op.">
+    <meta property="og:title" content="Luca Nickel">
+    <meta property="og:description" content="Mechanical Engineering student at Kettering University. Incoming GM co-op.">
+    <meta property="og:image" content="photo.jpg">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f0;
+            color: #222;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        :root { --accent: #2563eb; }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            background-color: #f5f5f0;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+
+        .nav-name { font-size: 1rem; font-weight: 500; letter-spacing: 0.02em; }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: #222; }
+
+        .nav-links a.active {
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+        }
+
+        body.dark .nav-links a.active {
+            color: #60a5fa;
+            border-bottom-color: #60a5fa;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 5px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #444;
+            font-family: 'Inter', sans-serif;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        section:last-of-type { border-bottom: none; }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-layout {
+            display: flex;
+            align-items: center;
+            gap: 48px;
+        }
+
+        .hero-text { flex: 1; }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 2.4rem;
+            background-color: var(--accent);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+
+        .hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .hero-photo img {
+            width: 220px;
+            height: 280px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid #e0e0e0;
+            display: block;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            cursor: pointer;
+            border: 1px solid #222;
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .btn-secondary { background: transparent; color: #222; }
+        .btn:hover { opacity: 0.8; }
+
+        h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #999;
+            margin-bottom: 32px;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            line-height: 1.9;
+            color: #444;
+            margin-bottom: 28px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 32px;
+        }
+
+        .skill-tag {
+            background: #eee;
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            color: #444;
+            font-family: monospace;
+        }
+
+        /* ── Experience: LinkedIn-style grouped companies ── */
+        .exp-group {
+            margin-bottom: 48px;
+        }
+
+        .exp-group:last-child { margin-bottom: 0; }
+
+        .exp-company {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .exp-company-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #888;
+            font-family: monospace;
+            flex-shrink: 0;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+        }
+
+        .exp-company-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .exp-company-name {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #222;
+        }
+
+        .exp-company-total {
+            font-size: 0.82rem;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .exp-roles {
+            padding-left: 58px;
+            position: relative;
+        }
+
+        .exp-roles::before {
+            content: '';
+            position: absolute;
+            left: 21px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: #e0e0e0;
+        }
+
+        .exp-role {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .exp-role:last-child { margin-bottom: 0; }
+
+        .exp-role::before {
+            content: '';
+            position: absolute;
+            left: -41px;
+            top: 6px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid #f5f5f0;
+        }
+
+        .exp-role-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .exp-role-date {
+            font-size: 0.8rem;
+            color: #999;
+            font-family: monospace;
+            margin-bottom: 8px;
+        }
+
+        .exp-role-desc {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.7;
+            list-style: none;
+        }
+
+        .exp-role-desc li {
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .exp-role-desc li::before {
+            content: '–';
+            position: absolute;
+            left: 0;
+            color: #bbb;
+        }
+
+        .exp-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .exp-tag {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: #999;
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* ── Education cards ── */
+        .edu-grid-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .edu-grid-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .edu-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fff;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .edu-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .edu-card-date {
+            font-size: 0.78rem;
+            color: #999;
+            font-family: monospace;
+            margin-bottom: 6px;
+        }
+
+        .edu-card-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .edu-card-org {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .edu-card-desc {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        .edu-card-desc li {
+            padding-left: 14px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        .edu-card-desc li::before {
+            content: '–';
+            position: absolute;
+            left: 0;
+            color: #ccc;
+        }
+
+        .edu-activities {
+            font-size: 0.82rem;
+            color: #888;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .edu-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .edu-tag {
+            font-size: 0.72rem;
+            font-family: monospace;
+            color: #999;
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .project-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #fff;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .project-card h3 { font-size: 1rem; font-weight: 500; margin-bottom: 8px; }
+
+        .project-card p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .project-tag {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: #999;
+            margin-right: 8px;
+        }
+
+        /* Contact */
+        .contact-intro {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .contact-intro a { color: var(--accent); }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            list-style: none;
+        }
+
+        .contact-links li {
+            padding: 14px 0;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.95rem;
+            transition: padding-left 0.2s;
+        }
+
+        .contact-links li:hover { padding-left: 6px; }
+        .contact-links a { color: #222; text-decoration: none; }
+        .contact-links a:hover { color: var(--accent); }
+        .contact-label { color: #999; font-size: 0.85rem; }
+
+        .resume-embed {
+            width: 100%;
+            height: 970px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            font-size: 0.85rem;
+            color: #999;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer a { color: #999; text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #222;
+            color: #fff;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 99;
+        }
+
+        .back-to-top.visible { opacity: 1; transform: translateY(0); }
+        .back-to-top:hover { opacity: 0.8; }
+
+        /* Dark mode */
+        body.dark { background-color: #1a1a1a; color: #eee; }
+        body.dark nav { background-color: #1a1a1a; border-color: #333; }
+        body.dark .exp-roles::before { background: #333; }
+        body.dark .exp-role::before { border-color: #1a1a1a; }
+        body.dark .exp-company-logo { background: #2a2a2a; border-color: #333; }
+        body.dark .exp-company-name { color: #eee; }
+        body.dark .exp-role-title { color: #eee; }
+        body.dark .exp-role-desc { color: #aaa; }
+        body.dark .exp-tag { background: #2a2a2a; color: #888; }
+        body.dark .edu-card { background: #222; border-color: #333; }
+        body.dark .edu-card:hover { border-color: var(--accent); }
+        body.dark .edu-card-title { color: #eee; }
+        body.dark .edu-card-desc { color: #aaa; }
+        body.dark .edu-activities { color: #666; }
+        body.dark .edu-tag { background: #2a2a2a; color: #888; }
+        body.dark .project-card { background: #222; border-color: #333; }
+        body.dark .project-card:hover { border-color: var(--accent); }
+        body.dark .skill-tag { background: #2a2a2a; color: #ccc; }
+        body.dark .hero p,
+        body.dark .about-text,
+        body.dark .contact-intro { color: #aaa; }
+        body.dark .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+        body.dark .btn-secondary { color: #eee; border-color: #555; }
+        body.dark .nav-links a,
+        body.dark .contact-label,
+        body.dark h2 { color: #666; }
+        body.dark .contact-links li,
+        body.dark section { border-color: #333; }
+        body.dark .contact-links a { color: #eee; }
+        body.dark .contact-links a:hover { color: #60a5fa; }
+        body.dark .toggle-btn { color: #aaa; border-color: #444; }
+        body.dark .resume-embed { border-color: #333; }
+        body.dark .hero-photo img { border-color: #333; }
+        body.dark footer { border-color: #333; color: #555; }
+        body.dark footer a:hover { color: #60a5fa; }
+        body.dark .back-to-top { background: #eee; color: #1a1a1a; }
+
+        @media (max-width: 520px) {
+            .projects-grid { grid-template-columns: 1fr; }
+            .edu-grid-top { grid-template-columns: 1fr; }
+            .edu-grid-bottom { grid-template-columns: 1fr; }
+            nav { padding: 16px 20px; }
+            .hero h1 { font-size: 2rem; }
+            .hero-layout { flex-direction: column-reverse; align-items: flex-start; gap: 24px; }
+            .nav-links { gap: 12px; }
+            .exp-roles { padding-left: 24px; }
+            .exp-roles::before { left: 0; }
+            .exp-role::before { left: -18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <span class="nav-name">Luca Nickel</span>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#resume">Resume</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><button class="toggle-btn" onclick="toggleMode()">Dark mode</button></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-layout">
+            <div class="hero-text">
+                <h1><span id="typed-text"></span><span class="cursor"></span></h1>
+                <p>Mechanical Engineering student at Kettering University — passionate about autonomous vehicles and intelligent systems, joining GM this summer.</p>
+                <div class="hero-links">
+                    <a href="#contact" class="btn btn-primary">Get in touch</a>
+                    <a href="#experience" class="btn btn-secondary">See my work</a>
+                </div>
+            </div>
+            <div class="hero-photo">
+                <img src="photo.jpg" alt="Luca Nickel">
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="fade-in">
+        <h2>About</h2>
+        <p class="about-text">I'm Luca, a Mechanical Engineering student at Kettering University. I've joined General Motors as a Manufacturing Engineering Co-op focused on Global Automation & Cybersecurity at the GM Global Technical Center. Autonomous vehicles and intelligent systems are what pulled me into engineering and specifically automotive — I've always been fascinated by how sensors, processors, and algorithms come together to make a machine that thinks. Kettering's co-op model means I'll be splitting time between the classroom and real industry work from the start, and getting that first rotation at GM feels like exactly the right beginning.</p>
+        <p class="about-text">Beyond engineering I've always been drawn to complex systems of all kinds. In high school I rebuilt a stagnant Investment Club from scratch — adding real lessons on shorting, stop-losses, and technical indicators, and launching a competition where the goal was to lose the most money, because learning what not to do is more valuable than chasing wins.</p>
+        <p class="about-text">Outside of all that, I spent 15 years playing competitive soccer and have been playing golf for 8 — a sport that's taught me more about patience and staying composed under pressure than almost anything else.</p>
+        <p class="about-text">Always happy to connect with engineers, co-op alumni, or anyone working in automotive and manufacturing.</p>
+        <div class="skills">
+            <span class="skill-tag">Mechanical Engineering</span>
+            <span class="skill-tag">CAD</span>
+            <span class="skill-tag">Automation</span>
+            <span class="skill-tag">Manufacturing</span>
+            <span class="skill-tag">HTML</span>
+            <span class="skill-tag">CSS</span>
+            <span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">AI tools</span>
+            <span class="skill-tag">German</span>
+            <span class="skill-tag">Spanish</span>
+        </div>
+    </section>
+
+    <section id="experience" class="fade-in">
+        <h2>Experience</h2>
+
+        <!-- General Motors -->
+        <div class="exp-group">
+            <div class="exp-company">
+                <div class="exp-company-logo"><img src="gm.png" alt="GM"></div>
+                <div>
+                    <div class="exp-company-name">General Motors</div>
+                    <div class="exp-company-total">July 2026 - Present</div>
+                </div>
+            </div>
+            <div class="exp-roles">
+                <div class="exp-role">
+                    <div class="exp-role-title">Manufacturing Engineering Co-op</div>
+                    <div class="exp-role-date">Summer 2026 · GM Global Technical Center · Automation Execution Commodity - Body Shop</div>                    <ul class="exp-role-desc">
+                    <li>Automation Execution Commodity – Body Shop, focused on manufacturing engineering and intelligent systems in GM's body shop operations.</li>                        <li>First rotation in Kettering University's co-op program, alternating between industry and academic terms through 2030.</li>
+                    </ul>
+                    <div class="exp-tags">
+                        <span class="exp-tag">Automation</span>
+                        <span class="exp-tag">Manufacturing</span>
+                        <span class="exp-tag">Cybersecurity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Great Oaks -->
+        <div class="exp-group">
+            <div class="exp-company">
+                <div class="exp-company-logo"><img src="GOCC.jpg" alt="Great Oaks"></div>
+                <div>
+                    <div class="exp-company-name">Great Oaks Country Club</div>
+                    <div class="exp-company-total">May 2022 – Present · 4 yrs</div>
+                </div>
+            </div>
+            <div class="exp-roles">
+                <div class="exp-role">
+                    <div class="exp-role-title">Golf Caddy</div>
+                    <div class="exp-role-date">May 2022 – Present · Rochester Hills, MI</div>
+                    <ul class="exp-role-desc">
+                        <li>Delivered consistent, professional on-course support earning repeat booking requests through reliable service.</li>
+                        <li>Provided personalized swing and strategy coaching to business professionals.</li>
+                        <li>Built strong relationships with diverse clientele through adaptable communication and professionalism.</li>
+                    </ul>
+                    <div class="exp-tags">
+                        <span class="exp-tag">Client Relations</span>
+                        <span class="exp-tag">Communication</span>
+                        <span class="exp-tag">Coaching</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="education" class="fade-in">
+        <h2>Education</h2>
+
+        <!-- Top row: 3 schools -->
+        <div class="edu-grid-top">
+            <div class="edu-card">
+                <div class="edu-card-date">2026 – 2030</div>
+                <div class="edu-card-title">B.S. Mechanical Engineering</div>
+                <div class="edu-card-org">Kettering University</div>
+                <ul class="edu-card-desc">
+                    <li>Flint, MI — B-section student</li>
+                    <li>Co-op model alternating industry and academic terms</li>
+                    <li>First rotation: GM, Global Automation & Cybersecurity</li>
+                </ul>
+                <div class="edu-tags">
+                    <span class="edu-tag">Mechanical Engineering</span>
+                    <span class="edu-tag">B-Section</span>
+                </div>
+            </div>
+
+            <div class="edu-card">
+                <div class="edu-card-date">Graduated May 2026</div>
+                <div class="edu-card-title">High School Diploma</div>
+                <div class="edu-card-org">Rochester High School</div>
+                <ul class="edu-card-desc">
+                    <li>Scholar of Highest Distinction</li>
+                </ul>
+                <p class="edu-activities"><strong>Activities and societies:</strong> Junior &amp; Senior Class VP | Student Council Representative (3-yrs) | Investment Club President | Varsity Soccer (Captain, 4-yr, MVP) | Varsity Golf (Captain, 4-yr, MVP) | National Honor Societies (English, National, Social Studies, Spanish) | Key Club (Kiwanis) | Link Crew | Multicultural Club</p>
+                <div class="edu-tags">
+                    <span class="edu-tag">3.95 GPA</span>
+                    <span class="edu-tag">8 AP Courses</span>
+                    <span class="edu-tag">Scholar Athlete</span>
+                </div>
+            </div>
+
+            <div class="edu-card">
+                <div class="edu-card-date">2014 – 2023</div>
+                <div class="edu-card-title">DSD 1 Diploma</div>
+                <div class="edu-card-org">Deutsche Sprachschule Bloomfield</div>
+                <ul class="edu-card-desc">
+                    <li>Beverly Hills, MI — 9 years of German language</li>
+                    <li>Official DSD 1 Diploma — native bilingual proficiency</li>
+                </ul>
+                <div class="edu-tags">
+                    <span class="edu-tag">German</span>
+                    <span class="edu-tag">DSD 1 Diploma</span>
+                    <span class="edu-tag">Bilingual</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom row: certifications placeholder -->
+        <div class="edu-grid-bottom">
+            <div class="edu-card">
+                <div class="edu-card-date">In progress</div>
+                <div class="edu-card-title">Your first certification</div>
+                <div class="edu-card-org">Platform / Provider</div>
+                <ul class="edu-card-desc">
+                    <li>Add any online courses, Coursera, LinkedIn Learning, etc.</li>
+                </ul>
+                <div class="edu-tags">
+                    <span class="edu-tag">Coming soon</span>
+                </div>
+            </div>
+            <div class="edu-card">
+                <div class="edu-card-date">In progress</div>
+                <div class="edu-card-title">Your second certification</div>
+                <div class="edu-card-org">Platform / Provider</div>
+                <ul class="edu-card-desc">
+                    <li>Add any online courses, Coursera, LinkedIn Learning, etc.</li>
+                </ul>
+                <div class="edu-tags">
+                    <span class="edu-tag">Coming soon</span>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="projects" class="fade-in">
+        <h2>Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Personal Homepage</h3>
+                <p>This site — built from scratch using HTML, CSS, and JavaScript. Includes dark mode, scroll animations, and is hosted on GitHub Pages.</p>
+                <span class="project-tag">HTML</span>
+                <span class="project-tag">CSS</span>
+                <span class="project-tag">JS</span>
+            </div>
+            <div class="project-card">
+                <h3>MI Student Investment Competition</h3>
+                <p>Launched a Southeast Michigan-wide student investment competition from concept to execution — managing all logistics, communications, and participant coordination.</p>
+                <span class="project-tag">Leadership</span>
+                <span class="project-tag">Finance</span>
+                <span class="project-tag">Operations</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" class="fade-in">
+        <h2>Resume</h2>
+        <p class="contact-intro">A quick overview of my background. <a href="resume.pdf" download>Download PDF</a> if you'd like a copy.</p>
+        <iframe src="resume.pdf" class="resume-embed"></iframe>
+    </section>
+
+    <section id="contact" class="fade-in">
+        <h2>Contact</h2>
+        <p class="contact-intro">I'm open to opportunities, collaborations, and conversations about engineering and AI. Feel free to reach out.</p>
+        <ul class="contact-links">
+            <li>
+                <span class="contact-label">LinkedIn</span>
+                <a href="https://www.linkedin.com/in/luca-nickel-30a7a6367" target="_blank">luca-nickel</a>
+            </li>
+            <li>
+                <span class="contact-label">Email</span>
+                <a href="mailto:luca.nickel@outlook.com">luca.nickel@outlook.com</a>
+            </li>
+            <li>
+                <span class="contact-label">Phone</span>
+                <a href="tel:+12488213393">+1 (248) 821-3393</a>
+            </li>
+        </ul>
+    </section>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <footer>
+        <p>© 2026 Luca Nickel &nbsp;·&nbsp; <a href="mailto:luca.nickel@outlook.com">luca.nickel@outlook.com</a></p>
+    </footer>
+
+    <script>
+        function toggleMode() {
+            const btn = document.querySelector('.toggle-btn');
+            document.body.classList.toggle('dark');
+            btn.textContent = document.body.classList.contains('dark') ? 'Light mode' : 'Dark mode';
+        }
+
+        const phrase = 'Luca Nickel';
+        let i = 0;
+        const target = document.getElementById('typed-text');
+
+        function type() {
+            if (i < phrase.length) {
+                target.textContent += phrase[i];
+                i++;
+                setTimeout(type, 120);
+            }
+        }
+
+        type();
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+        function highlightNav() {
+            let current = '';
+            sections.forEach(section => {
+                if (window.scrollY >= section.offsetTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', highlightNav);
+
+        const faders = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        faders.forEach(el => observer.observe(el));
+
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('visible', window.scrollY > 400);
+        });
+    </script>
+
+</body>
+</html>
